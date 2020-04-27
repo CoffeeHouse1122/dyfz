@@ -487,3 +487,12 @@ a:focus, a:hover {
   color: initial;
   text-decoration: none;
 }
+
+/* 遮盖层 */
+.layui-m-layershade {
+  background-color: transparent !important;
+}
+
+.layui-m-layer2 .layui-m-layercont i {
+  background-color: aqua !important;
+}
