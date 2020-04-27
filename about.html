@@ -127,7 +127,7 @@
 	</div>
 	<div class="a-sideBar com-sideBar-mask">
 	</div>
-	<div class="com-sideBar-con visible-xs">
+	<div class="com-sideBar-con visible-xs a-sideBar-con">
 		<ul>
 			<li class="cur"><a href="#">公司简介<i class="glyphicon glyphicon-play com-left-icon"></i></a></li>
 			<li><a href="#">企业文化<i class="glyphicon glyphicon-play com-left-icon"></i></a></li>
@@ -180,7 +180,12 @@
 	<script src="./js/qs.js"></script>
 	<script src="./js/swiper.min.js"></script>
 	<script src="./bootstrap/js/bootstrap.min.js"></script>
+	<script src="./js/layer/mobile/layer.js"></script>
 	<script src="./js/main.js"></script>
+	<script>
+		$(".header-nav li").eq(3).addClass("cur").siblings().removeClass("cur")
+		aboutInit()
+	</script>
 </body>
 
 </html>

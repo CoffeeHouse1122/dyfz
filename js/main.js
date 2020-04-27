@@ -366,6 +366,20 @@ async function productListInit() {
       $(".pl-right-con ul").html("")
     }
   })
+  // 侧边栏目切换
+  $(".pl-sideBar-con ul").on("click", "li", async function(){
+    type = $(this).attr("data-type")
+    productTitle = $(this).attr("data-title")
+    $(".pl-right-title span").html(productTitle)
+    await productFunc.getProductSubtype(type)
+    subtype = $(".pl-right-type ul .cur").attr("data-type")
+    console.log(subtype)
+    if(subtype) {
+      await productFunc.getProductList(subtype)
+    } else {
+      $(".pl-right-con ul").html("")
+    }
+  })
   // 右侧栏目切换
   $(".pl-right-type ul").on("click", "li", async function(){
     $(this).addClass("cur").siblings().removeClass("cur")
@@ -434,5 +448,64 @@ var productFunc = {
       productList = productList + productLi
     }
     $(".pl-right-con ul").html(productList)
+  }
+}
+/* ======================= 关于我们 ======================= **/
+async function aboutInit() {
+  await aboutFunc.getAboutType()
+  var aboutTitle = $(".a-left-con ul li.cur").attr("data-title")
+  $(".a-right-title span").html(aboutTitle)
+  var type = $(".a-left-con ul li.cur").attr("data-type")
+  await aboutFunc.getAboutCon(type)
+
+  $(".a-left-con ul").on("click", "li", async function(){
+    aboutTitle = $(this).attr("data-title")
+    $(".a-right-title span").html(aboutTitle)
+    type = $(this).attr("data-type")
+    await aboutFunc.getAboutCon(type)
+  })
+
+  $(".a-sideBar-con ul").on("click", "li", async function(){
+    aboutTitle = $(this).attr("data-title")
+    $(".a-right-title span").html(aboutTitle)
+    type = $(this).attr("data-type")
+    await aboutFunc.getAboutCon(type)
+  })
+
+
+}
+var aboutFunc = {
+  // 获取关于我们分类列表
+  async getAboutType() {
+    var data = await getCurrentCategoriesById("lIco7OiN4")
+    console.log(data)
+    var aboutList = ""
+    var aboutLi = ""
+    for(var i = 0; i < data.cates.length; i++) {
+      if(i == 0) {
+        aboutLi = `
+        <li class="cur" data-type="${data.cates[i].id}" data-title="${data.cates[i].name}"><a href="javascript:;">${data.cates[i].name}<i class="glyphicon glyphicon-play a-left-icon"></i></a></li>
+        `
+      } else {
+        aboutLi = `
+        <li data-type="${data.cates[i].id}" data-title="${data.cates[i].name}"><a href="javascript:;">${data.cates[i].name}<i class="glyphicon glyphicon-play a-left-icon"></i></a></li>
+        `
+      }
+      aboutList = aboutList + aboutLi
+      $(".a-left-con ul").html(aboutList)
+      $(".a-sideBar-con ul").html(aboutList)
+    }
+  },
+  // 获取分类内容
+  async getAboutCon(type) {
+    var data = await getConList(type, 1, 1)
+    console.log(data)
+    if(!data.docs.length) {
+      $(".a-right-con").html("")
+      return
+    }
+    var id = data.docs[0].id
+    var res = await getConItem(id)
+    $(".a-right-con").html(res.comments)
   }
 }
